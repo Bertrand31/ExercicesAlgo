@@ -25,6 +25,22 @@ module ListUtils = {
       | [_, ..._] => [List.map(headOrNone, lists), ...safeZip(List.map(List.tl, lists))]
     };
   };
+  /* TODO: unzip */
+  let groupBy = (fn: ('a => 'b), list: list('a)): Hashtbl.t('b, list('a)) => {
+    List.fold_left((map, elem) => {
+      let key = fn(elem);
+      switch(Hashtbl.mem(map, key)) {
+        | true => {
+          Hashtbl.replace(map, key, [elem, ...Hashtbl.find(map, key)]);
+          map;
+        }
+        | false => {
+          Hashtbl.add(map, key, [elem]);
+          map;
+        }
+      };
+    }, Hashtbl.create(1000), list)
+  };
 };
 
 module DynamicProgramming = {
