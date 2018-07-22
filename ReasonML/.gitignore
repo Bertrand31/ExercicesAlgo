@@ -1,0 +1,13 @@
+.env
+.DS_Store
+.merlin
+.bsb.lock
+npm-debug.log
+/lib/bs/
+/node_modules/
+.vscode/
+*.bs.js
+
+# Tests
+.coveralls.yml
+coverage

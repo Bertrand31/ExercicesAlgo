@@ -1,0 +1,27 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# OS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.env*
+!.env.sample
+
+# Editors
+*.sublime-workspace
+# Vim swap and backup files
+*.swo
+*.swp
+.vscode
+
+# Node and NPM
+npm-debug.log
+node_modules
+yarn-error.log
+
+# ESLint
+.eslintcache
+
