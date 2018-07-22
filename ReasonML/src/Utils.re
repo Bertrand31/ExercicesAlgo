@@ -27,14 +27,6 @@ module ListUtils = {
       | [_, ..._] => [map(headOrNone, lists), ...safeZip(map(tl, lists))]
     };
   };
-  let rec unzip = (lists: list(list('a))): list(list('a)) => {
-    switch(hd(lists)) {
-      | [] => []
-      | [_] => [map(hd, lists)]
-      | [_, ..._] => [map(hd, lists), ...unzip(map(tl, lists))]
-    };
-  };
-  /* TODO: safeUnzip */
   let groupBy = (fn: ('a => 'b), list: list('a)): Hashtbl.t('b, list('a)) => {
     fold_left((map, elem) => {
       let key = fn(elem);
