@@ -1,4 +1,6 @@
 module ListUtils = {
+  open List;
+
   let rec join = (char: string, list: list(string)): string => {
     switch(list) {
     | [] => raise(Failure("Passed an empty list"))
@@ -9,8 +11,8 @@ module ListUtils = {
   let rec zip = (lists: list(list('a))): list(list('a)) => {
     switch(List.hd(lists)) {
       | [] => []
-      | [_] => [List.map(List.hd, lists)]
-      | [_, ..._] => [List.map(List.hd, lists), ...zip(List.map(List.tl, lists))]
+      | [_] => [map(hd, lists)]
+      | [_, ..._] => [map(hd, lists), ...zip(map(tl, lists))]
     };
   };
   let headOrNone = (list: list('a)): option('a) => switch(list) {
@@ -19,26 +21,22 @@ module ListUtils = {
     | [head, ..._] => Some(head)
   };
   let rec safeZip = (lists: list(list('a))): list(list(option('a))) => {
-    switch(List.hd(lists)) {
+    switch(hd(lists)) {
       | [] => []
-      | [_] => [List.map(headOrNone, lists)]
-      | [_, ..._] => [List.map(headOrNone, lists), ...safeZip(List.map(List.tl, lists))]
+      | [_] => [map(headOrNone, lists)]
+      | [_, ..._] => [map(headOrNone, lists), ...safeZip(map(tl, lists))]
     };
   };
   let rec unzip = (lists: list(list('a))): list(list('a)) => {
-    switch(List.hd(lists)) {
+    switch(hd(lists)) {
       | [] => []
-      | [_] => [List.map(List.hd, lists)]
-      | [_, ..._] => {
-        let heads = List.map((list) => List.hd(list), lists);
-        let tails = List.map((list) => List.tl(list), lists);
-        [heads, ...unzip(tails)]
-      }
+      | [_] => [map(hd, lists)]
+      | [_, ..._] => [map(hd, lists), ...unzip(map(tl, lists))]
     };
   };
   /* TODO: safeUnzip */
   let groupBy = (fn: ('a => 'b), list: list('a)): Hashtbl.t('b, list('a)) => {
-    List.fold_left((map, elem) => {
+    fold_left((map, elem) => {
       let key = fn(elem);
       switch(Hashtbl.mem(map, key)) {
         | true => {
