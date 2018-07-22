@@ -25,7 +25,18 @@ module ListUtils = {
       | [_, ..._] => [List.map(headOrNone, lists), ...safeZip(List.map(List.tl, lists))]
     };
   };
-  /* TODO: unzip */
+  let rec unzip = (lists: list(list('a))): list(list('a)) => {
+    switch(List.hd(lists)) {
+      | [] => []
+      | [_] => [List.map(List.hd, lists)]
+      | [_, ..._] => {
+        let heads = List.map((list) => List.hd(list), lists);
+        let tails = List.map((list) => List.tl(list), lists);
+        [heads, ...unzip(tails)]
+      }
+    };
+  };
+  /* TODO: safeUnzip */
   let groupBy = (fn: ('a => 'b), list: list('a)): Hashtbl.t('b, list('a)) => {
     List.fold_left((map, elem) => {
       let key = fn(elem);
@@ -42,6 +53,7 @@ module ListUtils = {
     }, Hashtbl.create(1000), list)
   };
 };
+
 
 module DynamicProgramming = {
   let memoizeUnary = (fn: 'a => 'b) => {
