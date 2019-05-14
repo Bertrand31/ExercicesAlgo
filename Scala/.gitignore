@@ -1,0 +1,13 @@
+// Environment variables
+src/main/resources/application.conf
+
+target/
+*.log
+
+// IntelliJ
+*.iml
+.idea/
+
+// Metals
+.bloop
+.metals
