@@ -6,11 +6,11 @@ object StringCompressor {
 
   def run(string: String): String = {
     @tailrec
-    def compressRepeating(soFar: String, currentChar: Char, currentCount: Int, rest: List[Char]): String =
+    def compressRepeating(soFar: String, char: Char, count: Int, rest: List[Char]): String =
       rest match {
-        case head +: Nil => soFar + s"$currentChar$currentCount" + s"$head${1}"
-        case head +: tail if head == currentChar => compressRepeating(soFar, currentChar, currentCount + 1, tail)
-        case head +: tail => compressRepeating(soFar + s"$currentChar$currentCount", head, 1, tail)
+        case head +: Nil => soFar + s"$char$count" + s"$head${1}"
+        case head +: tail if head == char => compressRepeating(soFar, char, count + 1, tail)
+        case head +: tail => compressRepeating(soFar + s"$char$count", head, 1, tail)
       }
 
     compressRepeating("", string.head, 1, string.tail.toCharArray.toList)
