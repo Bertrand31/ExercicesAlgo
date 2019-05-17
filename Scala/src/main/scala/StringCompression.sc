@@ -1,24 +1,19 @@
 // https://www.hackerrank.com/challenges/string-compression/problem
 
-// Using a case class makes the code slightly cleaner and simpler than using a tuple because of the
-// ability to override `toString`. However, this also has a runtime cost so in a real-life,
-// performance-sensitive environment we'd probably go with representing CompressedChar with a
-// simple (String, Int) tuple type alias.
-case class CompressedChar(char: Char, count: Int) {
-  override def toString(): String = char + count.toString
-}
+import scala.annotation.tailrec
 
 object StringCompressor {
 
   def run(string: String): String = {
-    def makeTuple(currentChar: Char, currentCount: Int, rest: List[Char]): List[CompressedChar] =
+    @tailrec
+    def compressRepeating(soFar: String, currentChar: Char, currentCount: Int, rest: List[Char]): String =
       rest match {
-        case head +: Nil => List(CompressedChar(currentChar, currentCount), CompressedChar(head, 1))
-        case head +: tail if head == currentChar => makeTuple(currentChar, currentCount + 1, tail)
-        case head +: tail => CompressedChar(currentChar, currentCount) +: makeTuple(head, 1, tail)
+        case head +: Nil => soFar + s"$currentChar$currentCount" + s"$head${1}"
+        case head +: tail if head == currentChar => compressRepeating(soFar, currentChar, currentCount + 1, tail)
+        case head +: tail => compressRepeating(soFar + s"$currentChar$currentCount", head, 1, tail)
       }
 
-    makeTuple(string.head, 1, string.tail.toCharArray.toList).mkString
+    compressRepeating("", string.head, 1, string.tail.toCharArray.toList)
   }
 }
 
