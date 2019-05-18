@@ -4,17 +4,15 @@ import scala.annotation.tailrec
 
 object StringCompressor {
 
-  def run(string: String): String = {
-    @tailrec
-    def compressRepeating(soFar: String, char: Char, count: Int, rest: List[Char]): String =
-      rest match {
-        case head +: Nil => soFar + s"$char$count" + s"$head${1}"
-        case head +: tail if head == char => compressRepeating(soFar, char, count + 1, tail)
-        case head +: tail => compressRepeating(soFar + s"$char$count", head, 1, tail)
-      }
+  @tailrec
+  private def compressRepeating(soFar: String, char: Char, count: Int, rest: List[Char]): String =
+    rest match {
+      case head +: Nil => soFar + s"$char$count" + s"$head${1}"
+      case head +: tail if head == char => compressRepeating(soFar, char, count + 1, tail)
+      case head +: tail => compressRepeating(soFar + s"$char$count", head, 1, tail)
+    }
 
-    compressRepeating("", string.head, 1, string.tail.toCharArray.toList)
-  }
+  def run(str: String): String = compressRepeating("", str.head, 1, str.tail.toCharArray.toList)
 }
 
 val sampleString = "aaabccdeeef"
