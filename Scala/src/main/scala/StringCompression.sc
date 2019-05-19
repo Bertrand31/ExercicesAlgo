@@ -19,7 +19,19 @@ object StringCompressor {
 
   def compress(str: String): String = compressRepeating("", str.head, 1, str.tail.toCharArray.toList)
 
-  def decompress(str: String): String = ???
+  // @tailrec
+  private def decompressRepeating(chars: List[Char]): String =
+    chars match {
+      case head +: Nil => s"$head"
+      case head +: second +: Nil if Character.isDigit(second) => head.toString * second.asDigit
+      case head +: second +: Nil => s"$head$second"
+      case head +: second +: tail if Character.isDigit(second) => {
+        head.toString * second.asDigit + decompressRepeating(tail)
+      }
+      case head +: second +: tail => s"$head" + decompressRepeating(second +: tail)
+    }
+
+  def decompress(str: String): String = decompressRepeating(str.toCharArray.toList)
 }
 
 val sampleString = "aaabccdeeef"
@@ -27,3 +39,6 @@ println(sampleString)
 val compressed = StringCompressor.compress(sampleString)
 println(compressed)
 assert(compressed == "a3bccde3f")
+val decompressed = StringCompressor.decompress(compressed)
+println(decompressed)
+assert(decompressed == sampleString)
