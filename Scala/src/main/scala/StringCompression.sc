@@ -17,17 +17,18 @@ object StringCompressor {
       case head +: tail => compressRepeating(soFar + patternToString(char, count), head, 1, tail)
     }
 
-  def compress(str: String): String = compressRepeating("", str.head, 1, str.tail.toCharArray.toList)
+  def compress(str: String): String =
+    compressRepeating("", str.head, 1, str.tail.toCharArray.toList)
 
   // @tailrec
   private def decompressRepeating(chars: List[Char], soFar: String = ""): String =
     chars match {
-      case head +: Nil => s"$soFar$head"
-      case head +: second +: Nil if Character.isDigit(second) => soFar + (head.toString * second.asDigit)
+      case head +: Nil => soFar + head
+      case head +: second +: Nil if Character.isDigit(second) =>
+        soFar + (head.toString * second.asDigit)
       case head +: second +: Nil => soFar + head + second
-      case head +: second +: tail if Character.isDigit(second) => {
+      case head +: second +: tail if Character.isDigit(second) =>
         decompressRepeating(tail, soFar + (head.toString * second.asDigit))
-      }
       case head +: second +: tail => decompressRepeating(second +: tail, soFar + head)
     }
 
