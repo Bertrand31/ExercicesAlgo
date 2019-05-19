@@ -20,15 +20,15 @@ object StringCompressor {
   def compress(str: String): String = compressRepeating("", str.head, 1, str.tail.toCharArray.toList)
 
   // @tailrec
-  private def decompressRepeating(chars: List[Char]): String =
+  private def decompressRepeating(chars: List[Char], soFar: String = ""): String =
     chars match {
-      case head +: Nil => s"$head"
-      case head +: second +: Nil if Character.isDigit(second) => head.toString * second.asDigit
-      case head +: second +: Nil => s"$head$second"
+      case head +: Nil => s"$soFar$head"
+      case head +: second +: Nil if Character.isDigit(second) => soFar + (head.toString * second.asDigit)
+      case head +: second +: Nil => soFar + head + second
       case head +: second +: tail if Character.isDigit(second) => {
-        head.toString * second.asDigit + decompressRepeating(tail)
+        decompressRepeating(tail, soFar + (head.toString * second.asDigit))
       }
-      case head +: second +: tail => s"$head" + decompressRepeating(second +: tail)
+      case head +: second +: tail => decompressRepeating(second +: tail, soFar + head)
     }
 
   def decompress(str: String): String = decompressRepeating(str.toCharArray.toList)
