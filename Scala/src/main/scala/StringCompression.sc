@@ -20,7 +20,7 @@ object StringCompressor {
   def compress(str: String): String =
     compressRepeating("", str.head, 1, str.tail.toCharArray.toList)
 
-  // @tailrec
+  @tailrec
   private def decompressRepeating(chars: List[Char], soFar: String = ""): String =
     chars match {
       case head +: Nil => soFar + head
