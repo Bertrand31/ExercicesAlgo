@@ -14,7 +14,7 @@ object MergeSort {
     if (seq.length < 2) seq
     else {
       val pivot = Math.round((seq.length - 1).toFloat / 2)
-      merge[A](
+      merge(
         comparisonPredicate,
         sort(seq take pivot),
         sort(seq drop pivot),
