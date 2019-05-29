@@ -1,13 +1,16 @@
+import scala.annotation.tailrec
+
 object MergeSort {
 
-  private def merge[A](predicate: (A, A) => Boolean, left: Seq[A], right: Seq[A]): Seq[A] =
-    if (left.isEmpty) right
-    else if (right.isEmpty) left
+  @tailrec
+  private def merge[A](predicate: (A, A) => Boolean, left: Seq[A], right: Seq[A], soFar: Seq[A] = Seq()): Seq[A] =
+    if (left.isEmpty) soFar ++ right
+    else if (right.isEmpty) soFar ++ left
     else {
       val headLeft +: tailLeft = left;
       val headRight +: tailRight = right;
-      if (predicate(headLeft, headRight)) headLeft +: merge(predicate, tailLeft, right)
-      else headRight +: merge(predicate, left, tailRight)
+      if (predicate(headLeft, headRight)) merge(predicate, tailLeft, right, soFar :+ headLeft)
+      else merge(predicate, left, tailRight, soFar :+ headRight)
     }
 
   def sort[A](seq: Seq[A])(implicit comparisonPredicate: (A, A) => Boolean): Seq[A] =
