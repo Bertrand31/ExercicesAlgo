@@ -13,12 +13,9 @@ object KangarooCircus {
   def willKangaroosMeet(x1: Int, v1: Int, x2: Int, v2: Int): Boolean = {
     if ((x1 > x2 && v1 >= v2) || (x2 > x1 && v2 >= v1)) false
 
-    val kangaroo1 = Stream.from(0).map(_ * v1 + x1)
-    val kangaroo2 = Stream.from(0).map(_ * v2 + x2)
-
-    (0 to 10000).exists(hops => kangaroo1(hops) == kangaroo2(hops))
+    (0 to 10000).exists(hops => (hops * v1 + x1) == (hops * v2 + x2))
   }
 }
 
-println(KangarooCircus.willKangaroosMeet(0, 3, 4, 2))
-println(KangarooCircus.willKangaroosMeet(0, 2, 5, 3))
+assert(KangarooCircus.willKangaroosMeet(0, 3, 4, 2) == true)
+assert(KangarooCircus.willKangaroosMeet(0, 2, 5, 3) == false)
