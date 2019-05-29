@@ -10,11 +10,9 @@
 
 object KangarooCircus {
 
-  def willKangaroosMeet(x1: Int, v1: Int, x2: Int, v2: Int): Boolean = {
+  def willKangaroosMeet(x1: Int, v1: Int, x2: Int, v2: Int): Boolean =
     if ((x1 > x2 && v1 >= v2) || (x2 > x1 && v2 >= v1)) false
-
-    (0 to 10000).exists(hops => (hops * v1 + x1) == (hops * v2 + x2))
-  }
+    else (0 to 10000).exists(hops => hops * v1 + x1 == hops * v2 + x2)
 }
 
 assert(KangarooCircus.willKangaroosMeet(0, 3, 4, 2) == true)
