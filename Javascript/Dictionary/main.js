@@ -1,10 +1,8 @@
 const getAnagrams = dictionary => (inputWord) => {
   const inputWordFootprint = getWordFootprint(inputWord);
-  return dictionary.reduce((acc, word) => (
+  return dictionary.filter(word => (
     inputWord.length === word.length && footprintEquals(getWordFootprint(word), inputWordFootprint)
-      ? [...acc, word]
-      : acc
-  ), []);
+  ));
 };
 
 const addLetterToFootprint = (footprint, letter) => (
