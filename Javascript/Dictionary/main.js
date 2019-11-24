@@ -5,11 +5,10 @@ const getAnagrams = dictionary => (inputWord) => {
   ));
 };
 
-const addLetterToFootprint = (footprint, letter) => (
-  letter in footprint
-    ? { ...footprint, [letter]: footprint.letter + 1 }
-    : { ...footprint, [letter]: 1 }
-);
+const addLetterToFootprint = (footprint, letter) => ({
+  ...footprint,
+  [letter]: letter in footprint ? footprint.letter + 1 : 1,
+});
 
 const getWordFootprint = word => word.split('').reduce(addLetterToFootprint, {});
 
