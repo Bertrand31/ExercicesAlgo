@@ -33,16 +33,14 @@ object Minesweeper extends App {
   }
 
   private def handleCell(board: Board, coordinates: Coordinates): Char =
-    getCell(board, coordinates) match {
-      case Mine => Mine
-      case _ =>
-        getSurroundingCoordinates(coordinates)
-          .map(isMine(board))
-          .map(if (_) 1 else 0)
-          .sum
-          .toString
-          .head
-    }
+    if (getCell(board, coordinates) === Mine) Mine
+    else
+      getSurroundingCoordinates(coordinates)
+        .map(isMine(board))
+        .map(if (_) 1 else 0)
+        .sum
+        .toString
+        .head
 
   private def walkThroughRow(board: Board, currentRow: Int, currentChar: Int): List[Char] = {
     val updatedCell = handleCell(board, (currentRow, currentChar))
@@ -51,10 +49,8 @@ object Minesweeper extends App {
   }
 
   private def processRow(board: Board, currentRow: Int): Board =
-    currentRow match {
-      case x if x === board.length - 1 => Array(walkThroughRow(board, x, 0).mkString)
-      case x => walkThroughRow(board, currentRow, 0).mkString +: processRow(board, x + 1)
-    }
+    if (currentRow === board.length - 1) Array(walkThroughRow(board, currentRow, 0).mkString)
+    else walkThroughRow(board, currentRow, 0).mkString +: processRow(board, currentRow + 1)
 
   def processBoard(board: Board): Board = {
     assert(!board.isEmpty, "The board must be at least one row high")
