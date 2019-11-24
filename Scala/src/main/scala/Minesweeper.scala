@@ -54,7 +54,7 @@ object Minesweeper extends App {
 
   def processBoard(board: Board): Board = {
     assert(!board.isEmpty, "The board must be at least one row high")
-    val Array(head, tail@_*)= board.map(_.toList)
+    val Array(head, tail@_*) = board.map(_.toList)
     assert(head.length > 0, "The board must be at least one column wide")
     assert(tail.forall(_.length === head.length), "All columns must have the same breadth")
     processRow(board, 0)
