@@ -52,7 +52,7 @@ object Minesweeper extends App {
     if (currentRow === board.length - 1) Array(walkThroughRow(board, currentRow, 0).mkString)
     else walkThroughRow(board, currentRow, 0).mkString +: processRow(board, currentRow + 1)
 
-  def processBoard(board: Board): Board = {
+  def markMines(board: Board): Board = {
     assert(!board.isEmpty, "The board must be at least one row high")
     val Array(head, tail@_*) = board.map(_.toList)
     assert(head.length > 0, "The board must be at least one column wide")
@@ -60,7 +60,7 @@ object Minesweeper extends App {
     processRow(board, 0)
   }
 
-  def showBoard(board: Board): Unit = board foreach println
+  def showBoard: Board => Unit = _ foreach println
 
   val input: Board = Array(
     "       ",
@@ -73,5 +73,5 @@ object Minesweeper extends App {
     "***    ",
   )
 
-  showBoard(processBoard(input))
+  showBoard(markMines(input))
 }
