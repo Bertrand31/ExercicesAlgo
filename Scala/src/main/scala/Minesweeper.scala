@@ -63,15 +63,15 @@ object Minesweeper extends App {
   def showBoard(board: Board): Unit = board foreach println
 
   val input: Board = Array(
-		"       ",
-		" *     ",
-		"    *  ",
-		"   *   ",
-		"      *",
-		"***    ",
-		"* *    ",
-		"***    ",
-	)
+    "       ",
+    " *     ",
+    "    *  ",
+    "   *   ",
+    "      *",
+    "***    ",
+    "* *    ",
+    "***    ",
+  )
 
   showBoard(processBoard(input))
 }
