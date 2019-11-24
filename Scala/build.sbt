@@ -1,5 +1,9 @@
 scalaVersion := "2.13.1"
 
+libraryDependencies ++= Seq(
+  "org.typelevel" %% "cats-core" % "2.0.0",
+)
+
 scalacOptions ++= Seq(
   "-deprecation", // Warn about deprecated features
   "-encoding", "UTF-8", // Specify character encoding used by source files
