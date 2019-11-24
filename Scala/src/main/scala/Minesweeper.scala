@@ -2,19 +2,19 @@ import cats.implicits._
 
 object Minesweeper extends App {
 
-	type Board = Array[String]
+  type Board = Array[String]
   type Coordinates = (Int, Int)
 
   private def getCell(board: Board, coordinates: Coordinates): Char =
-    board(coordinates._1).toList(coordinates._2)
+    board(coordinates._1)(coordinates._2)
 
   private val Mine = '*'
 
   private def isMine(board: Board): Coordinates => Boolean =
-		_ match {
+    _ match {
       case (x, y) if x < 0 || x >= board.length || y < 0 || y >= board.head.length => false
-			case coordinates => getCell(board, coordinates) === Mine
-		}
+      case coordinates => getCell(board, coordinates) === Mine
+    }
 
   private val CoordinatesFns: List[(Int => Int, Int => Int)] = List(
     (_ - 1, _ - 1),
@@ -60,7 +60,7 @@ object Minesweeper extends App {
     processRow(board, 0)
   }
 
-	def showBoard(board: Board): Unit = board foreach println
+  def showBoard(board: Board): Unit = board foreach println
 
   val input: Board = Array(
 		"       ",
