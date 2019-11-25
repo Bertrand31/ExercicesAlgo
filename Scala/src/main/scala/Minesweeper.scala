@@ -32,6 +32,9 @@ object Minesweeper extends App {
     CoordinatesFns.map(_.bimap(_(row), _(col)))
   }
 
+  // The maximum number of mines that can surround a cell being 8, once converted
+  // to a string the number of neighbouring mines can only be 1 character long.
+  // Hence why we use `head` to turn the String into a Char.
   private def handleCell(board: Board, coordinates: Coordinates): Char =
     if (getCell(board, coordinates) === Mine) Mine
     else
