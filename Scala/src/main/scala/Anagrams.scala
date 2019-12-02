@@ -24,7 +24,9 @@ object Solution extends App {
           val rest = s.drop(step + 1)
           val anagrams =
             rest
+              .toSeq
               .sliding(len)
+              .map(_.unwrap)
               .withFilter(compareWords(_, pattern))
               .map((pattern, _))
           acc ++ anagrams
