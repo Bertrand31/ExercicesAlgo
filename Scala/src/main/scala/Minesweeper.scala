@@ -1,6 +1,23 @@
 import cats.implicits._
 
+object PerfUtils {
+
+  import scala.collection.mutable.HashMap
+
+  def memoizeUnary[A, B](fn: A => B): A => B = {
+    val store = HashMap[A, B]()
+    (arg: A) =>
+      store.getOrElse(arg, {
+        val result = fn(arg)
+        store(arg) = result
+        result
+      })
+  }
+}
+
 object Minesweeper extends App {
+
+  import PerfUtils.memoizeUnary
 
   type Board = Array[String]
   type Coordinates = (Int, Int)
@@ -35,37 +52,44 @@ object Minesweeper extends App {
   // The maximum number of mines that can surround a cell being 8, once converted
   // to a string the number of neighbouring mines can only be 1 character long.
   // Hence why we use `head` to turn the String into a Char.
-  private def handleCell(board: Board, coordinates: Coordinates): Char =
+  private def handleCell(board: Board, coordinates: Coordinates, isMineFn: Coordinates => Boolean): Char =
     if (getCell(board, coordinates) === Mine) Mine
     else
       getSurroundingCoordinates(coordinates)
-        .map(isMine(board))
+        .map(isMineFn)
         .map(if (_) 1 else 0)
         .sum
         .toString
         .head
 
-  private def walkThroughRow(board: Board, currentRow: Int, currentChar: Int): List[Char] = {
-    val updatedCell = handleCell(board, (currentRow, currentChar))
+  private def walkThroughRow(board: Board, currentRow: Int, currentChar: Int, isMineFn: Coordinates => Boolean): List[Char] = {
+    val updatedCell = handleCell(board, (currentRow, currentChar), isMineFn)
     if (board(currentRow).length - 1 === currentChar) List(updatedCell)
-    else updatedCell +: walkThroughRow(board, currentRow, currentChar + 1)
+    else updatedCell +: walkThroughRow(board, currentRow, currentChar + 1, isMineFn)
   }
 
-  private def processRow(board: Board, currentRow: Int): Board =
-    if (currentRow === board.length - 1) Array(walkThroughRow(board, currentRow, 0).mkString)
-    else walkThroughRow(board, currentRow, 0).mkString +: processRow(board, currentRow + 1)
+  private def processRow(board: Board, currentRow: Int, isMineFn: Coordinates => Boolean): Board = {
+    val processedRow = walkThroughRow(board, currentRow, 0, isMineFn).mkString
+    if (currentRow === board.length - 1) Array(processedRow)
+    else processedRow +: processRow(board, currentRow + 1, isMineFn)
+  }
 
   def markMines(board: Board): Board = {
     assert(!board.isEmpty, "The board must be at least one row high")
     val Array(head, tail@_*) = board.map(_.toList)
     assert(head.length > 0, "The board must be at least one column wide")
     assert(tail.forall(_.length === head.length), "All columns must have the same breadth")
-    processRow(board, 0)
+    val isMineFn = memoizeUnary(isMine(board))
+    processRow(board, 0, isMineFn)
   }
 
   def showBoard: Board => Unit = _ foreach println
 
   val input: Board = Array(
+    "       ",
+    "       ",
+    "       ",
+    "       ",
     "       ",
     " *     ",
     "    *  ",
@@ -73,7 +97,7 @@ object Minesweeper extends App {
     "      *",
     "***    ",
     "* *    ",
-    "***    ",
+    "       ",
   )
 
   showBoard(markMines(input))
