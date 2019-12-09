@@ -38,7 +38,7 @@ object SecretSantaPureApp extends IOApp {
 
   import scala.util.Random
 
-  val names = Array(
+  private val names = Array(
     "Foo",
     "Bar",
     "Baz",
@@ -54,11 +54,11 @@ object SecretSantaPureApp extends IOApp {
       .makePairs(names, randomSeed)
       .flatMap(
         _
-          .toList
           .map(pair => {
             val (giver, receiver) = pair
             print(giver + " fait un cadeau à " + receiver)
           })
+          .toList
           .parSequence
       )
       .as(ExitCode.Success)
