@@ -1,4 +1,6 @@
 import scala.annotation.tailrec
+import cats.implicits._
+import cats.effect._
 
 // Knuth’s 64-bit linear congruential generator
 final case class Seed(long: Long) {
@@ -12,8 +14,8 @@ object SecretSantaPure {
 
   @tailrec
   private def pickReceiver(people: Array[Person], pairings: Pairings, indexToPair: Int, seed: Seed): Person = {
-    val randIndex = (seed.long % people.length).toInt
-    if (randIndex == indexToPair || pairings.contains(people(randIndex)))
+    val randIndex = (Math.abs(seed.long) % people.length).toInt
+    if (randIndex === indexToPair || pairings.contains(people(randIndex)))
       pickReceiver(people, pairings, indexToPair, seed.next)
     else
       people(randIndex)
@@ -25,16 +27,14 @@ object SecretSantaPure {
     else {
       val giver = people(current)
       val receiver = pickReceiver(people, soFar, current, seed)
-      makePairs(people, current + 1, soFar + (receiver -> giver), seed.next)
+      makePairs(people, current + 1, soFar + (receiver -> giver), seed)
     }
 
-  // Could use optional arguments with default values instead of this proxy `makePairs` method,
-  // but that would mean leaking those default arguments out and making the API unclean.
-  def makePairs(people: Array[Person], randSeed: Long): Pairings =
-    makePairs(people, 0, Map(), Seed(Math.abs(randSeed)))
+  def makePairs(people: Array[Person], randSeed: IO[Long]): IO[Pairings] =
+    randSeed.map(Seed).map(makePairs(people, 0, Map(), _))
 }
 
-object SecretSantaPureApp extends App {
+object SecretSantaPureApp extends IOApp {
 
   import scala.util.Random
 
@@ -46,10 +46,21 @@ object SecretSantaPureApp extends App {
     "Bertrand",
   )
 
-  val rand = Random.nextLong
+  private def print(str: String): IO[Unit] = IO { println(str) }
 
-  SecretSantaPure.makePairs(names, rand).foreach(pair => {
-    val (giver, receiver) = pair
-    println(giver + " fait un cadeau à " + receiver)
-  })
+  def run(args: List[String]): IO[ExitCode] = {
+    val randomSeed = IO { Random.nextLong }
+    SecretSantaPure
+      .makePairs(names, randomSeed)
+      .flatMap(
+        _
+          .toList
+          .map(pair => {
+            val (giver, receiver) = pair
+            print(giver + " fait un cadeau à " + receiver)
+          })
+          .parSequence
+      )
+      .as(ExitCode.Success)
+  }
 }
