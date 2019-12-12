@@ -1,29 +1,6 @@
-import scala.reflect.ClassTag
 import scala.annotation.tailrec
 import cats.implicits._
 import cats.effect._
-
-// Knuth’s 64-bit linear congruential generator
-final case class RandomSeed(long: Long) {
-  def next = RandomSeed(long * 6364136223846793005L + 1442695040888963407L)
-}
-
-object ArrayShuffling {
-
-  @tailrec
-  private def fisherYates[A: ClassTag](array: Array[A], seed: RandomSeed, currentIndex: Int): Array[A] =
-    if (currentIndex >= array.length) array
-    else {
-      val randIndex = (Math.abs(seed.long) % (array.length - currentIndex)).toInt + currentIndex
-      val a = array(currentIndex)
-      val b = array(randIndex)
-      val swappedArray = array.updated(currentIndex, b).updated(randIndex, a)
-      fisherYates(swappedArray, seed.next, currentIndex + 1)
-    }
-
-  def fisherYates[A: ClassTag](array: Array[A], randomSeed: RandomSeed): Array[A] =
-    fisherYates(array, randomSeed, 0)
-}
 
 object SecretSanta2Pure {
 
@@ -39,7 +16,7 @@ object SecretSanta2Pure {
     }
 
   def makePairs(people: Array[Person], randNumber: IO[Long]): IO[Pairings] =
-    randNumber.map(RandomSeed).map(seed => {
+    randNumber.map(Seed).map(seed => {
       val shuffled = ArrayShuffling.fisherYates(people, seed)
       makePairs(shuffled, 0, Map())
     })
