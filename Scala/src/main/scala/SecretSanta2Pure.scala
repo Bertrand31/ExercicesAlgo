@@ -17,7 +17,7 @@ object SecretSanta2Pure {
 
   def makePairs(people: Array[Person], randNumber: IO[Long]): IO[Pairings] =
     randNumber.map(Seed).map(seed => {
-      val shuffled = ArrayShuffling.fisherYates(people, seed)
+      val shuffled = FisherYates.shuffle(people, seed)
       makePairs(shuffled, 0, Map())
     })
 }
