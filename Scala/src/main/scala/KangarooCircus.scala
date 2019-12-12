@@ -15,5 +15,8 @@ object KangarooCircus {
     else (0 to 10000).exists(hops => hops * v1 + x1 == hops * v2 + x2)
 }
 
-assert(KangarooCircus.willKangaroosMeet(0, 3, 4, 2) == true)
-assert(KangarooCircus.willKangaroosMeet(0, 2, 5, 3) == false)
+object KangarooCircusApp extends App {
+
+  assert(KangarooCircus.willKangaroosMeet(0, 3, 4, 2) == true)
+  assert(KangarooCircus.willKangaroosMeet(0, 2, 5, 3) == false)
+}

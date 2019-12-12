@@ -35,11 +35,14 @@ object StringCompressor {
   def decompress(str: String): String = decompressRepeating(str.toCharArray.toList)
 }
 
-val sampleString = "aaabccdeeef"
-println(sampleString)
-val compressed = StringCompressor.compress(sampleString)
-assert(compressed.length < sampleString.length)
-assert(compressed == "a3bccde3f")
-val decompressed = StringCompressor.decompress(compressed)
-println(decompressed)
-assert(decompressed == sampleString)
+object StringCompressorApp extends App {
+
+  val sampleString = "aaabccdeeef"
+  println(sampleString)
+  val compressed = StringCompressor.compress(sampleString)
+  assert(compressed.length < sampleString.length)
+  assert(compressed == "a3bccde3f")
+  val decompressed = StringCompressor.decompress(compressed)
+  println(decompressed)
+  assert(decompressed == sampleString)
+}
