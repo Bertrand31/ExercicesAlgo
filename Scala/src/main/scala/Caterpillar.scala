@@ -1,4 +1,5 @@
-// https://www.hackerrank.com/challenges/diagonal-difference/problem
+// https://codility.com/media/train/13-CaterpillarMethod.pdf
+// Is there in a given array a sub-sequence which elements sum up to a given integer
 
 object Caterpillar {
 
