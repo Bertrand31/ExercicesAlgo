@@ -4,7 +4,7 @@
 object Caterpillar {
 
   private def caterpillar(
-    arr: Array[Int], target: Int, lowerBound: Int, upperBound: Int, currentSum: Int
+    arr: Array[Int], target: Int, lowerBound: Int, upperBound: Int, currentSum: Int,
   ): Boolean =
     if (currentSum == target) true
     else if (lowerBound == arr.length - 1) false
