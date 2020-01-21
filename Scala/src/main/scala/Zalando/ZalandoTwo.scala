@@ -1,3 +1,6 @@
+// Truncate the input string after the given number of characters, or less.
+// The output string must not finish with a space, of contain a truncated word.
+
 import scala.annotation.tailrec
 
 object ZalandoTwo {
@@ -20,8 +23,8 @@ object ZalandoTwo {
 
 object ZalandoTwoApp extends App {
 
-  println("|" + ZalandoTwo.solution("Codility We test coders", 14) + "|")
-  println("|" + ZalandoTwo.solution("Codility", 14) + "|")
-  println("|" + ZalandoTwo.solution("Codility", 5) + "|")
+  println("|" + ZalandoTwo.solution("Codility We test coders", 14) + "|") // "Codility We"
+  println("|" + ZalandoTwo.solution("Codility", 14) + "|") // "Codility"
+  println("|" + ZalandoTwo.solution("Codility", 5) + "|") // ""
 }
 

@@ -1,3 +1,6 @@
+// How many times within a given range is there a number
+// which contains at least 3 occurences of the same digit.
+
 import scala.annotation.tailrec
 
 object ZalandoOne {
