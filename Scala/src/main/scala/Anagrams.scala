@@ -1,16 +1,16 @@
 // https://www.hackerrank.com/challenges/sherlock-and-anagrams/problem
 
-object Solution extends App {
+object Anagram {
 
-    type Anagram = (String, String)
+  type Anagram = (String, String)
 
-    private def makeFootPrint: String => Map[Char, Int] =
-      _.foldLeft(Map[Char, Int]())((acc, char) => {
-        acc.get(char) match {
-          case Some(count) => acc + (char -> (count + 1))
-          case None => acc + (char -> 1)
-        }
-      })
+  private def makeFootPrint: String => Map[Char, Int] =
+    _.foldLeft(Map[Char, Int]())((acc, char) => {
+      acc.get(char) match {
+        case Some(count) => acc + (char -> (count + 1))
+        case None => acc + (char -> 1)
+      }
+    })
 
     private def compareWords(s1: String, s2: String): Boolean =
       makeFootPrint(s1) == makeFootPrint(s2)
@@ -34,6 +34,9 @@ object Solution extends App {
         sherlockAndAnagrams(s, step + 1, soFar ++ newAnagrams)
       }
     }
+}
 
-  println(sherlockAndAnagrams("ifailuhkqq"))
+object AnagramApp extends App {
+
+  println(Anagram.sherlockAndAnagrams("ifailuhkqq"))
 }
