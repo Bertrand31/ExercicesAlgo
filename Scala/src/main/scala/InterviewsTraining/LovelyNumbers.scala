@@ -3,7 +3,7 @@
 
 import scala.annotation.tailrec
 
-object ZalandoOne {
+object LovelyNumbers {
 
   @tailrec
   private def walkThroughChars(chars: List[Char], soFar: Map[Char, Int] = Map()): Boolean =
@@ -17,11 +17,11 @@ object ZalandoOne {
 
   private def isLovely(n: Int): Boolean = walkThroughChars(n.toString.toList)
 
-  def solution(a: Int, b: Int): Int = (a to b) count isLovely
+  def countLovelyNumbers(a: Int, b: Int): Int = (a to b) count isLovely
 }
 
-object ZalandoOneApp extends App {
+object LovelyNumbersApp extends App {
 
-  println(ZalandoOne.solution(1, 111))
+  println(LovelyNumbers.countLovelyNumbers(1, 111))
 }
 

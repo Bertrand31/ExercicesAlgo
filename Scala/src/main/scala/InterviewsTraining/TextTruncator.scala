@@ -3,9 +3,9 @@
 
 import scala.annotation.tailrec
 
-object ZalandoTwo {
+object TextTruncator {
 
-  def solution(message: String, k: Int): String = {
+  def truncate(message: String, k: Int): String = {
 
     @tailrec
     def walkThroughChars(chars: List[Char], wordIsOpen: Boolean = false): List[Char] =
@@ -21,10 +21,10 @@ object ZalandoTwo {
   }
 }
 
-object ZalandoTwoApp extends App {
+object TextTruncatorApp extends App {
 
-  println("|" + ZalandoTwo.solution("Codility We test coders", 14) + "|") // "Codility We"
-  println("|" + ZalandoTwo.solution("Codility", 14) + "|") // "Codility"
-  println("|" + ZalandoTwo.solution("Codility", 5) + "|") // ""
+  println("|" + TextTruncator.truncate("Codility We test coders", 14) + "|") // "Codility We"
+  println("|" + TextTruncator.truncate("Codility", 14) + "|") // "Codility"
+  println("|" + TextTruncator.truncate("Codility", 5) + "|") // ""
 }
 

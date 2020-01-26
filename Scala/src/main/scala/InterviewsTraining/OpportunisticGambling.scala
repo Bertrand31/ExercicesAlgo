@@ -4,7 +4,7 @@
 
 import scala.annotation.tailrec
 
-object ZalandoThree {
+object OpportunisticGambling {
 
   @tailrec
   private def countStepsDown(chips: Int, remainingAllIn: Int, steps: Int = 0): Int =
@@ -17,13 +17,13 @@ object ZalandoThree {
     else
       countStepsDown(chips - 1, remainingAllIn, steps +  1)
 
-  def solution(n: Int, k: Int): Int = countStepsDown(n, k)
+  def getNumberOfSteps(n: Int, k: Int): Int = countStepsDown(n, k)
 }
 
-object ZalandoThreeApp extends App {
+object OpportunisticGamblingApp extends App {
 
-  println(ZalandoThree.solution(8, 0))
-  println(ZalandoThree.solution(19, 2))
-  println(ZalandoThree.solution(10, 10))
+  assert(OpportunisticGambling.getNumberOfSteps(8, 0) == 7)
+  assert(OpportunisticGambling.getNumberOfSteps(19, 2) == 7)
+  assert(OpportunisticGambling.getNumberOfSteps(10, 10) == 4)
 }
 
