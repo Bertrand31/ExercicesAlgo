@@ -14,6 +14,7 @@ import cats.implicits._
   * the 1s can be found within the binary representation of a number that stays in the decimal base.
   */
 object AllSubsets {
+
   def get[A](arr: Array[A]): IndexedSeq[IndexedSeq[A]] =
     (0 until Math.pow(2, arr.size).toInt)
       .map(
@@ -28,7 +29,7 @@ object AllSubsets {
     (0 until Math.pow(2, arr.size).toInt)
       .map(nb =>
         (0 until arr.size).collect({
-          case shift if (nb & ~(1 << shift)) === nb => arr(shift)
+          case shift if (nb & ~(1 << shift)) =!= nb => arr(shift)
         })
       )
 }
@@ -42,6 +43,6 @@ object AllSubsetsApp extends App {
     val a = AllSubsets.get(list)
     val b = AllSubsets.getWithBitShifting(list)
     assert(a.size === b.size)
-    assert(a == b.reverse)
+    assert(a == b)
   })
 }
