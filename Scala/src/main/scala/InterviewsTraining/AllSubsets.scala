@@ -7,6 +7,7 @@ object AllSubsets {
   // over n items. Hence the 2^n possible combinations.
   // So we generate all numbers from 0 to 2^n - 1, then use their binary representations (which are
   // going to be n bits long) to decide which index we keep from the array.
+  // This solution takes O(n) time.
   def get(arr: Array[Int]): IndexedSeq[IndexedSeq[Int]] =
     (0 until Math.pow(2, arr.size).toInt)
       .map(
