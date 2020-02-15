@@ -15,8 +15,11 @@ import cats.implicits._
   */
 object AllSubsets {
 
+  private def subsetsNumber(arr: Iterable[_]): Int =
+    Math.pow(2, arr.size).toInt
+
   def get[A](arr: Array[A]): IndexedSeq[IndexedSeq[A]] =
-    (0 until Math.pow(2, arr.size).toInt)
+    (0 until subsetsNumber(arr))
       .map(
         _
           .toBinaryString
@@ -26,7 +29,7 @@ object AllSubsets {
       )
 
   def getWithBitShifting[A](arr: Array[A]): IndexedSeq[IndexedSeq[A]] =
-    (0 until Math.pow(2, arr.size).toInt)
+    (0 until subsetsNumber(arr))
       .map(nb =>
         (0 until arr.size).collect({
           case shift if (nb & ~(1 << shift)) =!= nb => arr(shift)
@@ -38,10 +41,9 @@ object AllSubsetsApp extends App {
 
   import scala.util.Random
 
-  val lists = (0 to 20).map(_ => (0 to 5).map(_ => Random.between(0, 1000)).toArray)
-  lists.foreach(list => {
-    val a = AllSubsets.get(list)
-    val b = AllSubsets.getWithBitShifting(list)
-    assert(a == b)
-  })
+  (0 to 20)
+    .map(_ => (0 to 5).map(_ => Random.between(0, 1000)).toArray)
+    .foreach(list =>
+      assert(AllSubsets.get(list) == AllSubsets.getWithBitShifting(list))
+    )
 }
