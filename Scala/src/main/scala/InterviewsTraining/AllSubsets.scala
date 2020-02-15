@@ -1,15 +1,19 @@
+// Given an array of distinct values, return all the possible subsets of this array
+
 import cats.implicits._
 
-// Given an array of numbers, return all the possible subsets of this array
 
+/** Where n is the array length, there are 2^n possible subsets we can generate from that array.
+  * This is because every item of the array can either taken or not (2 possible states),
+  * over n items. Hence the 2^n possible combinations.
+  * So we generate all numbers from 0 to 2^n - 1, then use their binary representations (which are
+  * going to be n bits long) to decide which index we keep from the array.
+  *
+  * These two solutions take O(n) time, but use very different techniques. The first one converts
+  * each number to a string of binary digits, while the second uses bit shifting to test where
+  * the 1s can be found within the binary representation of a number that stays in the decimal base.
+  */
 object AllSubsets {
-
-  // Where n is the array length, there are 2^n possible subsets we can generate from that array.
-  // This is because every item of the array can either taken or not (2 possible states),
-  // over n items. Hence the 2^n possible combinations.
-  // So we generate all numbers from 0 to 2^n - 1, then use their binary representations (which are
-  // going to be n bits long) to decide which index we keep from the array.
-  // This solution takes O(n) time.
   def get[A](arr: Array[A]): IndexedSeq[IndexedSeq[A]] =
     (0 until Math.pow(2, arr.size).toInt)
       .map(
