@@ -1,3 +1,5 @@
+import cats.implicits._
+
 // Given an array of numbers, return all the possible subsets of this array
 
 object AllSubsets {
@@ -17,9 +19,25 @@ object AllSubsets {
           .zip(Iterator from 0)
           .collect({ case ('1', index) => arr(index) })
       )
+
+  def getWithBitShifting[A](arr: Array[A]): IndexedSeq[IndexedSeq[A]] =
+    (0 until Math.pow(2, arr.size).toInt)
+      .map(nb =>
+        (0 until arr.size).collect({
+          case shift if (nb & ~(1 << shift)) === nb => arr(shift)
+        })
+      )
 }
 
 object AllSubsetsApp extends App {
 
-  println(AllSubsets.get(Array(2, 4, 8)))
+  import scala.util.Random
+
+  val lists = (0 to 20).map(_ => (0 to 5).map(_ => Random.between(0, 1000)).toArray)
+  lists.foreach(list => {
+    val a = AllSubsets.get(list)
+    val b = AllSubsets.getWithBitShifting(list)
+    assert(a.size === b.size)
+    assert(a == b.reverse)
+  })
 }
