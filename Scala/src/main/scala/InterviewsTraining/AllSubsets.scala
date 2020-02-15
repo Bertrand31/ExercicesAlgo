@@ -39,10 +39,8 @@ object AllSubsets {
 
 object AllSubsetsApp extends App {
 
-  import scala.util.Random
-
   (0 to 20)
-    .map(_ => (0 to 5).map(_ => Random.between(0, 1000)).toArray)
+    .map(_ => (0 to 5).map(_ => scala.util.Random.between(0, 1000)).toArray)
     .foreach(list =>
       assert(AllSubsets.get(list) == AllSubsets.getWithBitShifting(list))
     )
