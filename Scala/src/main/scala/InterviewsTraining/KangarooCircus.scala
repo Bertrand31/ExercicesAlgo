@@ -17,6 +17,6 @@ object KangarooCircus {
 
 object KangarooCircusApp extends App {
 
-  assert(KangarooCircus.willKangaroosMeet(0, 3, 4, 2) == true)
-  assert(KangarooCircus.willKangaroosMeet(0, 2, 5, 3) == false)
+  assert(KangarooCircus.willKangaroosMeet(0, 3, 4, 2))
+  assert(!KangarooCircus.willKangaroosMeet(0, 2, 5, 3))
 }

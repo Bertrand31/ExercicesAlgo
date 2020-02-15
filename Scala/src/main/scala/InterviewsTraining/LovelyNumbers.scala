@@ -24,4 +24,3 @@ object LovelyNumbersApp extends App {
 
   println(LovelyNumbers.countLovelyNumbers(1, 111))
 }
-

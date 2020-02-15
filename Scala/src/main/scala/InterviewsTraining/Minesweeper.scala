@@ -56,9 +56,7 @@ object Minesweeper extends App {
     if (getCell(board, coordinates) === Mine) Mine
     else
       getSurroundingCoordinates(coordinates)
-        .map(isMineFn)
-        .map(if (_) 1 else 0)
-        .sum
+        .count(isMineFn)
         .toString
         .head
 
@@ -75,10 +73,10 @@ object Minesweeper extends App {
   }
 
   def markMines(board: Board): Board = {
-    assert(!board.isEmpty, "The board must be at least one row high")
+    require(!board.isEmpty, "The board must be at least one row high")
     val Array(head, tail@_*) = board.map(_.toList)
-    assert(head.length > 0, "The board must be at least one column wide")
-    assert(tail.forall(_.length === head.length), "All columns must have the same breadth")
+    require(head.length > 0, "The board must be at least one column wide")
+    require(tail.forall(_.length === head.length), "All columns must have the same breadth")
     val isMineFn = memoizeUnary(isMine(board))
     processRow(board, 0, isMineFn)
   }

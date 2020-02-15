@@ -1,6 +1,6 @@
 import scala.annotation.tailrec
 
-object MiraGriesSummry {
+object MiraGriesSummary {
 
   @tailrec
   private def getFrequencies(seq: Iterator[Int], maxKeys: Int, soFar: Map[Int, Int]): Map[Int, Int] =
@@ -22,6 +22,6 @@ object MiraGriesSummry {
 object MisraGriesSummaryApp extends App {
 
   val iterable = (0 to 100).map(_ => scala.util.Random.between(0, 10))
-  val frequencies = MiraGriesSummry.getFrequencies(iterable, 2)
+  val frequencies = MiraGriesSummary.getFrequencies(iterable, 2)
   println(frequencies)
 }
