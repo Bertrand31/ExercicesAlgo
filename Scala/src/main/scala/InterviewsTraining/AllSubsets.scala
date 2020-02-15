@@ -42,7 +42,6 @@ object AllSubsetsApp extends App {
   lists.foreach(list => {
     val a = AllSubsets.get(list)
     val b = AllSubsets.getWithBitShifting(list)
-    assert(a.size === b.size)
     assert(a == b)
   })
 }
