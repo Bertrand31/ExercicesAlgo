@@ -24,7 +24,7 @@ object AllSubsets {
         _
           .toBinaryString
           .reverse
-          .zip(Iterator from 0)
+          .zipWithIndex
           .collect({ case ('1', index) => arr(index) })
       )
 

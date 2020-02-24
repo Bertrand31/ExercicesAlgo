@@ -1,3 +1,5 @@
+import cats.implicits._
+
 /*
 
 Suppose we have some input data describing a graph of relationships between parents and children over multiple generations. The data is formatted as a list of (parent, child) pairs, where each individual is assigned a unique integer identifier.
@@ -51,10 +53,10 @@ object EarliestAncestor {
 object EarliestAncestorApp extends App {
 
   val parentChildPairs = List((2, 3), (3, 15), (3, 6), (5, 6), (5, 7), (4, 5), (4, 8), (4, 9), (9, 11), (14, 4))
-  assert(findEarliestAncestor(parentChildPairs, 8) === 14)
-  assert(findEarliestAncestor(parentChildPairs, 7) === 14)
-  assert(findEarliestAncestor(parentChildPairs, 6) === 14)
-  assert(findEarliestAncestor(parentChildPairs, 15) === 2)
-  assert(findEarliestAncestor(parentChildPairs, 14) === -1)
-  assert(findEarliestAncestor(parentChildPairs, 11) === 14)
+  assert(EarliestAncestor.findEarliestAncestor(parentChildPairs, 8) === 14)
+  assert(EarliestAncestor.findEarliestAncestor(parentChildPairs, 7) === 14)
+  assert(EarliestAncestor.findEarliestAncestor(parentChildPairs, 6) === 14)
+  assert(EarliestAncestor.findEarliestAncestor(parentChildPairs, 15) === 2)
+  assert(EarliestAncestor.findEarliestAncestor(parentChildPairs, 14) === -1)
+  assert(EarliestAncestor.findEarliestAncestor(parentChildPairs, 11) === 14)
 }
