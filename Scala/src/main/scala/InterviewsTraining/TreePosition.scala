@@ -32,15 +32,15 @@ object TreePosition {
 
   private def makePositionsArray(node: Node): Array[Array[Char]] = {
     val positionsArray = getNodesPositions(Some(node))
-    val leftMost = positionsArray.minBy(_._1)._1
-    val rightMost = positionsArray.maxBy(_._1)._1
-    val shift = -(leftMost)
+    val (leftMost, _) = positionsArray.minBy(_._1)
+    val (rightMost, _) = positionsArray.maxBy(_._1)
+    val shift = -leftMost
     val breadth = rightMost - leftMost + 1
     positionsArray.foldLeft(new Array[Array[Char]](breadth))((acc, tuple) => {
       val (position, char) = tuple
       val targetIndex = position + shift
       val newIndexValues = acc(targetIndex) match {
-        case values: Array[_] => values :+ char
+        case values: Array[Char] => values :+ char
         case _ => Array(char)
       }
       acc.updated(targetIndex, newIndexValues)
