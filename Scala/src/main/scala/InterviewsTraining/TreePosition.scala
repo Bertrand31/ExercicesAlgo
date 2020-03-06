@@ -21,7 +21,7 @@
 
 object TreePosition {
 
-  final case class Node(value: Char, left: Option[Node], right: Option[Node])
+  final case class Node(value: Char, left: Option[Node] = None, right: Option[Node] = None)
 
   private def makePositionsArray(tree: Option[Node], position: Int = 0): Array[(Int, Char)] =
     tree.fold(Array.empty[(Int, Char)])(node => {
@@ -60,13 +60,7 @@ object TreePositionApp extends App {
 
   val sampleTree = Node(
     value='a',
-    left=Some(
-      Node(
-        value='b',
-        left=None,
-        right=None,
-      ),
-    ),
+    left=Some(Node(value='b')),
     right=Some(
       Node(
         value='c',
@@ -76,26 +70,12 @@ object TreePositionApp extends App {
             left=Some(
               Node(
                 value='f',
-                left=Some(
-                  Node(
-                    value='g',
-                    None,
-                    None,
-                  ),
-                ),
-                right=None,
+                left=Some(Node(value='g')),
               ),
             ),
-            right=None,
           )
         ),
-        right=Some(
-          Node(
-            value='e',
-            left=None,
-            right=None,
-          ),
-        ),
+        right=Some(Node(value='e')),
       ),
     ),
   )
