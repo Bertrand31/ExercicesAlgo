@@ -23,35 +23,32 @@ object TreePosition {
 
   final case class Node(value: Char, left: Option[Node] = None, right: Option[Node] = None)
 
-  private def makePositionsArray(tree: Option[Node], position: Int = 0): Array[(Int, Char)] =
+  private def getNodesPositions(tree: Option[Node], position: Int = 0): Array[(Int, Char)] =
     tree.fold(Array.empty[(Int, Char)])(node => {
-      val left = makePositionsArray(node.left, position - 1)
-      val right = makePositionsArray(node.right, position + 1)
+      val left = getNodesPositions(node.left, position - 1)
+      val right = getNodesPositions(node.right, position + 1)
       (position -> node.value) +: (left ++ right)
     })
 
-  private def makePositionMap(node: Node): (Map[Int, Array[Char]], Int, Int) = {
-    val positionsArray = makePositionsArray(Some(node))
-    val baseAccumulator = (Map.empty[Int, Array[Char]], 0, 0)
-    positionsArray.foldLeft(baseAccumulator)((acc, tuple) => {
-      val (currentMap, minPosition, maxPosition) = acc
+  private def makePositionsArray(node: Node): Array[Array[Char]] = {
+    val positionsArray = getNodesPositions(Some(node))
+    val leftMost = positionsArray.minBy(_._1)._1
+    val rightMost = positionsArray.maxBy(_._1)._1
+    val shift = -(leftMost)
+    val breadth = rightMost - leftMost + 1
+    positionsArray.foldLeft(new Array[Array[Char]](breadth))((acc, tuple) => {
       val (position, char) = tuple
-      val newPair = currentMap.get(position) match {
-        case Some(values) => (position -> (values :+ char))
-        case None => (position -> Array(char))
+      val targetIndex = position + shift
+      val newIndexValues = acc(targetIndex) match {
+        case values: Array[_] => values :+ char
+        case _ => Array(char)
       }
-      val newMin = minPosition min position
-      val newMax = maxPosition max position
-      (currentMap + newPair, newMin, newMax)
+      acc.updated(targetIndex, newIndexValues)
     })
   }
 
-  def groupCharsByTreeColumn(node: Node): String = {
-    val (positionMap, minPosition, maxPosition) = makePositionMap(node)
-    (minPosition to maxPosition)
-      .map(positionMap(_).mkString)
-      .mkString(" ")
-  }
+  def groupCharsByTreeColumn: Node => String =
+    makePositionsArray(_).map(_.mkString).mkString(" ")
 }
 
 object TreePositionApp extends App {
