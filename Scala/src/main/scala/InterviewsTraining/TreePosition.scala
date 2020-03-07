@@ -10,9 +10,9 @@
   *    /
   *   g
   *
-  * Print the following: g bf ad c e.
+  * Print the following: "g bf ad c e".
   * The orders of the letters within a group do not matter,
-  * so the following would also be valid: g fb da c e.
+  * so the following would also be valid: "g fb da c e" or even "g fb ad c e".
   *
   * The tree structure is to be implemented, and both the construction of the tree and the
   * generation of the output have to be performed in O(n) time and O(n) space.
@@ -29,7 +29,7 @@ object TreePosition {
     tree.fold(Array.empty[(Int, Char)])(node => {
       val left = getNodesPositions(node.left, position - 1)
       val right = getNodesPositions(node.right, position + 1)
-      (position -> node.value) +: (left ++ right)
+      (left ++ right) :+ (position -> node.value)
     })
 
   private def makePositionsArray(node: Node): Array[List[Char]] = {
@@ -76,6 +76,6 @@ object TreePositionApp extends App {
   )
 
   val result = TreePosition.groupCharsByTreeColumn(sampleTree)
-  println(result)
-  assert(result == "g bf ad c e")
+  val acceptable = Seq("g bf ad c e", "g fb da c e", "g fb ad c e")
+  assert(acceptable contains result)
 }
