@@ -21,6 +21,8 @@
 
 object TreePosition {
 
+  import ArrayUtils._
+
   final case class Node(value: Char, left: Option[Node] = None, right: Option[Node] = None)
 
   private def getNodesPositions(tree: Option[Node], position: Int = 0): Array[(Int, Char)] =
@@ -30,16 +32,15 @@ object TreePosition {
       (position -> node.value) +: (left ++ right)
     })
 
-  private def makePositionsArray(node: Node): Array[Array[Char]] = {
+  private def makePositionsArray(node: Node): Array[List[Char]] = {
     val positionsArray = getNodesPositions(Some(node))
-    val (leftMost, _) = positionsArray.minBy(_._1)
-    val (rightMost, _) = positionsArray.maxBy(_._1)
+    val (leftMost, rightMost) = positionsArray.minAndMaxBy(_._1)
     val offset = -leftMost
     val breadth = rightMost + offset + 1
-    positionsArray.foldLeft(new Array[Array[Char]](breadth))((acc, tuple) => {
+    positionsArray.foldLeft(new Array[List[Char]](breadth))((acc, tuple) => {
       val (position, char) = tuple
       val targetIndex = position + offset
-      val newIndexValues = Option(acc(targetIndex)).fold(Array(char))(_ :+ char)
+      val newIndexValues = Option(acc(targetIndex)).fold(List(char))(char +: _)
       acc.updated(targetIndex, newIndexValues)
     })
   }
@@ -76,4 +77,5 @@ object TreePositionApp extends App {
 
   val result = TreePosition.groupCharsByTreeColumn(sampleTree)
   println(result)
+  assert(result == "g bf ad c e")
 }
