@@ -16,7 +16,6 @@
   *
   * The tree structure is to be implemented, and both the construction of the tree and the
   * generation of the output have to be performed in O(n) time and O(n) space.
-  *
   */
 
 object TreePosition {
@@ -34,7 +33,7 @@ object TreePosition {
 
   private def makePositionsArray(node: Node): Array[List[Char]] = {
     val positionsArray = getNodesPositions(Some(node))
-    val (leftMost, rightMost) = positionsArray.minAndMaxBy(_._1)
+    val (leftMost, rightMost) = positionsArray.minAndMaxBy(_._1) // Method from ArrayUtils
     val offset = -leftMost
     val breadth = rightMost + offset + 1
     positionsArray.foldLeft(new Array[List[Char]](breadth))((acc, tuple) => {
