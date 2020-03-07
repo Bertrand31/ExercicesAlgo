@@ -1,4 +1,4 @@
-/** Given the following three:
+/** Given the following tree:
   *
   *       a
   *      / \
