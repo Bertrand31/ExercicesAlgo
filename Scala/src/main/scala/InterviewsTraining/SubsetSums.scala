@@ -7,10 +7,7 @@ object SubsetSums {
     val runningSums = arr.foldLeft(Array.empty[Int])((acc, item) =>
       acc :+ (acc.lastOption.getOrElse(0) + item)
     )
-    val mapOfSums = runningSums.foldLeft(Map.empty[Int, Int])((acc, item) => {
-      val newCount = acc.getOrElse(item, 0) + 1
-      acc + (item -> newCount)
-    })
+    val mapOfSums = runningSums.groupMapReduce(identity)(_ => 1)(_ + _)
     runningSums.foldLeft(0)((acc, item) => acc + mapOfSums.getOrElse(item - target, 0))
   }
 }
