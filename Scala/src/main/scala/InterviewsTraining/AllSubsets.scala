@@ -35,13 +35,17 @@ object AllSubsets {
           case shift if (nb & ~(1 << shift)) =!= nb => arr(shift)
         })
       )
+
+  def getWithStdLib[A](arr: Array[A]): IndexedSeq[Array[A]] =
+    (0 until arr.size).flatMap(arr combinations _)
 }
 
 object AllSubsetsApp extends App {
 
   (0 to 20)
     .map(_ => (0 to 5).map(_ => scala.util.Random.between(0, 1000)).toArray)
-    .foreach(list =>
+    .foreach(list => {
       assert(AllSubsets.get(list) == AllSubsets.getWithBitShifting(list))
-    )
+      assert(AllSubsets.get(list) == AllSubsets.getWithStdLib(list))
+    })
 }
