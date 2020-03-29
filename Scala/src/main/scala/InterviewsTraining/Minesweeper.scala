@@ -33,7 +33,7 @@ object Minesweeper extends App {
       case coordinates => getCell(board, coordinates) === Mine
     }
 
-  private val CoordinatesFns: List[(Int => Int, Int => Int)] = List(
+  private val CoordinatesFnsPairs: List[(Int => Int, Int => Int)] = List(
     (_ - 1, _ - 1),
     (_ - 1, identity),
     (_ - 1, _ + 1),
@@ -44,10 +44,10 @@ object Minesweeper extends App {
     (identity, _ - 1),
   )
 
-  private def getSurroundingCoordinates(coordinates: Coordinates): List[Coordinates] = {
-    val (row, col) = coordinates
-    CoordinatesFns.map(_.bimap(_(row), _(col)))
-  }
+  private def getSurroundingCoordinates: Coordinates => List[Coordinates] =
+    CoordinatesFnsPairs map {
+      case (fx, fy) => (xy: Coordinates) => xy.bimap(fx, fy)
+    } ap List(_)
 
   // The maximum number of mines that can surround a cell being 8, once converted
   // to a string the number of neighbouring mines can only be 1 character long.
