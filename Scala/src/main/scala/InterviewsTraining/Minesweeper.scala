@@ -1,3 +1,4 @@
+import cats.Applicative
 import cats.implicits._
 
 object PerfUtils {
@@ -47,7 +48,7 @@ object Minesweeper extends App {
   private def getSurroundingCoordinates: Coordinates => List[Coordinates] =
     CoordinatesFnsPairs map {
       case (fx, fy) => (xy: Coordinates) => xy.bimap(fx, fy)
-    } ap List(_)
+    } ap Applicative[List].pure(_)
 
   // The maximum number of mines that can surround a cell being 8, once converted
   // to a string the number of neighbouring mines can only be 1 character long.
