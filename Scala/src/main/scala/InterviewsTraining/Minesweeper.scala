@@ -1,24 +1,8 @@
 import cats.Applicative
 import cats.implicits._
-
-object PerfUtils {
-
-  import scala.collection.mutable.HashMap
-
-  def memoizeUnary[A, B](fn: A => B): A => B = {
-    val store = HashMap[A, B]()
-    (arg: A) =>
-      store.getOrElse(arg, {
-        val result = fn(arg)
-        store(arg) = result
-        result
-      })
-  }
-}
+import PerfUtils.memoizeUnary
 
 object Minesweeper extends App {
-
-  import PerfUtils.memoizeUnary
 
   type Board = Array[String]
   type Coordinates = (Int, Int)
@@ -35,13 +19,13 @@ object Minesweeper extends App {
     }
 
   private val CoordinatesFnsPairs: List[(Int => Int, Int => Int)] = List(
-    (_ - 1, _ - 1),
-    (_ - 1, identity),
-    (_ - 1, _ + 1),
+    (_ - 1,    _ - 1),
+    (_ - 1,    identity),
+    (_ - 1,    _ + 1),
     (identity, _ + 1),
-    (_ + 1, _ + 1),
-    (_ + 1, identity),
-    (_ + 1, _ - 1),
+    (_ + 1,    _ + 1),
+    (_ + 1,    identity),
+    (_ + 1,    _ - 1),
     (identity, _ - 1),
   )
 

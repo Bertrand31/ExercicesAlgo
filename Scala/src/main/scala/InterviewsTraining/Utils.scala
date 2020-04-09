@@ -1,3 +1,18 @@
+object PerfUtils {
+
+  import scala.collection.mutable.HashMap
+
+  def memoizeUnary[A, B](fn: A => B): A => B = {
+    val store = HashMap[A, B]()
+    (arg: A) =>
+      store.getOrElse(arg, {
+        val result = fn(arg)
+        store(arg) = result
+        result
+      })
+  }
+}
+
 object ArrayUtils {
 
   import scala.reflect.ClassTag
