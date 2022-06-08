@@ -26,7 +26,7 @@ object SecretSantaPure {
     }
 
   def makePairs(people: Array[Person], randSeed: IO[Long]): IO[Pairings] =
-    randSeed.map(Seed).map(makePairs(people, 0, Map(), _))
+    randSeed.map(Seed(_)).map(makePairs(people, 0, Map(), _))
 }
 
 object SecretSantaPureApp extends IOApp {

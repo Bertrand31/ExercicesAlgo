@@ -10,16 +10,15 @@ object SecretSanta2Pure {
   @tailrec
   private def makePairs(people: Array[Person], currentIndex: Int, soFar: Pairings): Pairings =
     if (currentIndex == people.length - 1) soFar + (people(currentIndex) -> people.head)
-    else {
+    else
       val newMap = soFar + (people(currentIndex) -> people(currentIndex + 1))
       makePairs(people, currentIndex + 1, newMap)
-    }
 
   def makePairs(people: Array[Person], randNumber: IO[Long]): IO[Pairings] =
-    randNumber.map(Seed).map(seed => {
+    randNumber.map(Seed(_)).map(seed =>
       val shuffled = FisherYates.shuffle(people, seed)
       makePairs(shuffled, 0, Map())
-    })
+    )
 }
 
 object SecretSanta2PureApp extends IOApp {
@@ -34,20 +33,17 @@ object SecretSanta2PureApp extends IOApp {
     "Bertrand",
   )
 
-  private def print(str: String): IO[Unit] = IO { println(str) }
-
-  def run(args: List[String]): IO[ExitCode] = {
+  def run(args: List[String]): IO[ExitCode] =
     val randomSeed = IO { Random.nextLong }
     SecretSanta2Pure.makePairs(names, randomSeed)
       .flatMap(
         _
-          .map(pair => {
+          .map(pair =>
             val (giver, receiver) = pair
-            print(giver + " fait un cadeau à " + receiver)
-          })
+            IO.print(giver + " fait un cadeau à " + receiver)
+          )
           .toList
-          .parSequence
+          .parSequence_
       )
       .as(ExitCode.Success)
-  }
 }

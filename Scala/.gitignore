@@ -11,3 +11,5 @@ target/
 // Metals
 .bloop
 .metals
+.bsp
+project/

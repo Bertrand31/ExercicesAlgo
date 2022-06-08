@@ -12,9 +12,10 @@ object StringCompressor {
   @tailrec
   private def compressRepeating(soFar: String, char: Char, count: Int, rest: List[Char]): String =
     rest match {
-      case head +: Nil => soFar + patternToString(char, count) + patternToString(head, 1)
-      case head +: tail if head == char => compressRepeating(soFar, char, count + 1, tail)
-      case head +: tail => compressRepeating(soFar + patternToString(char, count), head, 1, tail)
+      case Nil => soFar // Cannot happen
+      case head :: Nil => soFar + patternToString(char, count) + patternToString(head, 1)
+      case head :: tail if head == char => compressRepeating(soFar, char, count + 1, tail)
+      case head :: tail => compressRepeating(soFar + patternToString(char, count), head, 1, tail)
     }
 
   def compress(str: String): String =
@@ -23,13 +24,14 @@ object StringCompressor {
   @tailrec
   private def decompressRepeating(chars: List[Char], soFar: String = ""): String =
     chars match {
-      case head +: Nil => soFar + head
-      case head +: second +: Nil if Character.isDigit(second) =>
+      case Nil => soFar // Cannot happen
+      case head :: Nil => soFar + head
+      case head :: second :: Nil if Character.isDigit(second) =>
         soFar + (head.toString * second.asDigit)
-      case head +: second +: Nil => soFar + head + second
-      case head +: second +: tail if Character.isDigit(second) =>
+      case head :: second :: Nil => soFar + head + second
+      case head :: second :: tail if Character.isDigit(second) =>
         decompressRepeating(tail, soFar + (head.toString * second.asDigit))
-      case head +: second +: tail => decompressRepeating(second +: tail, soFar + head)
+      case head :: second :: tail => decompressRepeating(second +: tail, soFar + head)
     }
 
   def decompress(str: String): String = decompressRepeating(str.toCharArray.toList)

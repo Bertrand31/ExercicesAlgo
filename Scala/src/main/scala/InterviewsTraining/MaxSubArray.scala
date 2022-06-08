@@ -6,11 +6,10 @@ object MaxSubArray {
   @tailrec
   private def findMaxSum(seq: Seq[Int], currentSum: Int, maxSum: Int): Int =
     if (seq.isEmpty) maxSum
-    else {
+    else
       val newCurrentSum = 0 max (currentSum + seq.head)
       val newMaxSum = maxSum max newCurrentSum
       findMaxSum(seq.tail, newCurrentSum, newMaxSum)
-    }
 
   def findMaxSum: Seq[Int] => Int = findMaxSum(_, 0, Int.MinValue)
 }

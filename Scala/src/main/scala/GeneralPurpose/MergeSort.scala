@@ -10,23 +10,21 @@ object MergeSort {
   ): IndexedSeq[A] =
     if (left.isEmpty) soFar ++ right
     else if (right.isEmpty) soFar ++ left
-    else {
-      val headLeft +: tailLeft = left;
-      val headRight +: tailRight = right;
+    else
+      val headLeft +: tailLeft = left
+      val headRight +: tailRight = right
       if (predicate(headLeft, headRight)) merge(predicate, tailLeft, right, soFar :+ headLeft)
       else merge(predicate, left, tailRight, soFar :+ headRight)
-    }
 
   def sort[A](seq: IndexedSeq[A])(implicit comparisonPredicate: (A, A) => Boolean): IndexedSeq[A] =
     if (seq.length < 2) seq
-    else {
+    else
       val pivot = seq.length / 2
       merge(
         comparisonPredicate,
         sort(seq take pivot),
         sort(seq drop pivot),
       )
-    }
 }
 
 object MergeSortTests extends App {
