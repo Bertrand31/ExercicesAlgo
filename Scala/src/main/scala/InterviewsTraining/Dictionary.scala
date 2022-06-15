@@ -1,3 +1,6 @@
+// Given a dictionary (a list of strings) find all anagrams for a given word.
+// Anagrams are words that contain the same letters, only in a different order.
+
 import cats.implicits._
 import cats.effect._
 
