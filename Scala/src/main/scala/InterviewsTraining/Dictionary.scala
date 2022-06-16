@@ -19,6 +19,7 @@ object DictionaryAnagramsApp extends IOApp:
 
   private val Dictionary = Array(
     "friend",
+    "finder",
     "redfin",
     "abcsde",
     "refind",
@@ -27,11 +28,11 @@ object DictionaryAnagramsApp extends IOApp:
     "asdgadgad",
   )
 
-  private val ExpectedAnagrams = Array("redfin", "refind")
+  private val ExpectedAnagrams = Array("redfin", "refind", "finder")
 
   def run(args: List[String]): IO[ExitCode] =
     val results = DictionaryAnagrams.findAnagrams(Dictionary, "friend")
     IO
-      .fromEither(Either.catchOnly[AssertionError](results sameElements ExpectedAnagrams))
+      .fromEither(Either.catchNonFatal(results sameElements ExpectedAnagrams))
       .productR(IO.print(s"Success! Found ${results.mkString("\"", ", ", "\"")}.\n"))
       .as(ExitCode.Success)
