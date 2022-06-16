@@ -3,28 +3,21 @@
 
 import scala.annotation.tailrec
 
-object TextTruncator {
+object TextTruncator:
 
-  def truncate(message: String, k: Int): String = {
-
+  def truncate(message: String, k: Int): String =
     @tailrec
     def walkThroughChars(chars: List[Char], wordIsOpen: Boolean = false): List[Char] =
       if ((chars.length <= k && !wordIsOpen) || chars.isEmpty) chars
-      else {
-        val head +: tail = chars
-        if (head == ' ') walkThroughChars(tail, false)
-        else walkThroughChars(tail, true)
-      }
+      else
+        if (chars.head == ' ') walkThroughChars(chars.tail, false)
+        else walkThroughChars(chars.tail, true)
 
     val reversedList = message.reverse.toList
     walkThroughChars(reversedList).reverse.mkString
-  }
-}
 
-object TextTruncatorApp extends App {
+object TextTruncatorApp extends App:
 
   println("|" + TextTruncator.truncate("Codility We test coders", 14) + "|") // "Codility We"
   println("|" + TextTruncator.truncate("Codility", 14) + "|") // "Codility"
   println("|" + TextTruncator.truncate("Codility", 5) + "|") // ""
-}
-
