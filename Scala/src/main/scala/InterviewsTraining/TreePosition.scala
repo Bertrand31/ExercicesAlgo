@@ -28,7 +28,7 @@ object TreePosition {
     tree.fold(Array.empty[(Int, Char)])(node => {
       val left = getNodesPositions(node.left, position - 1)
       val right = getNodesPositions(node.right, position + 1)
-      (left ++ right) :+ (position -> node.value)
+      left ++ right :+ (position -> node.value)
     })
 
   private def makePositionsArray(node: Node): Array[List[Char]] = {
@@ -44,7 +44,7 @@ object TreePosition {
     })
   }
 
-  def groupCharsByTreeColumn: Node => String =
+  val groupCharsByTreeColumn: Node => String =
     makePositionsArray(_).map(_.mkString).mkString(" ")
 }
 

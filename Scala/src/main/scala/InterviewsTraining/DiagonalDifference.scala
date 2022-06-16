@@ -10,20 +10,18 @@ object DiagonalDifference {
   private def getLeftRightDiagonal(arr: Grid, soFar: Int = 0): Int =
     arr match {
       case Array(Array(x: Int)) => soFar + x
-      case _ => {
+      case _ =>
         val offsetArr = arr.drop(1).map(_.drop(1))
         getLeftRightDiagonal(offsetArr, soFar + arr(0)(0))
-      }
     }
 
   @tailrec
   private def getRightLeftDiagonal(arr: Grid, soFar: Int = 0): Int =
     arr match {
       case Array(Array(x: Int)) => soFar + x
-      case _ => {
+      case _ =>
         val offsetArr = arr.drop(1).map(_.take(arr.length - 1))
         getRightLeftDiagonal(offsetArr, soFar + arr(0)(arr.length - 1))
-      }
     }
 
   def get(arr: Grid): Int = Math.abs(getLeftRightDiagonal(arr) - getRightLeftDiagonal(arr))
