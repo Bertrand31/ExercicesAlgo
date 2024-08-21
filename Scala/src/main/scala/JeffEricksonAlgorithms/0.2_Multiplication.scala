@@ -1,3 +1,5 @@
+import scala.annotation.tailrec
+
 object LatticeMultiplication extends App {
 
   private val SingleDigitsMultiplications: Map[(Int, Int), Int] =
@@ -11,7 +13,7 @@ object LatticeMultiplication extends App {
       else getDigitsInternal(n / 10, (n % 10) :: digits)
     getDigitsInternal(n, Nil)
 
-  private def findAllAddingTo(n: Int): List[(Int, Int)] =
+  private def pairsAddingUpTo(n: Int): List[(Int, Int)] =
     (0 to n).map(i => (i, n - i)).toList
 
   private def fibonacciMultiply(a: Int, b: Int): Int =
@@ -21,7 +23,7 @@ object LatticeMultiplication extends App {
     val z = new Array[Int](steps)
     var hold = 0
     for (k <- (0 to (steps - 1))) {
-      findAllAddingTo(k).foreach({
+      pairsAddingUpTo(k).foreach({
         case (i, j) if i < x.size && j < y.size =>
           hold += SingleDigitsMultiplications((x(i), y(j)))
         case _ =>
@@ -36,4 +38,17 @@ object LatticeMultiplication extends App {
   assert(fibonacciMultiply(8, 74) == 592)
   assert(fibonacciMultiply(28, 14) == 392)
   assert(fibonacciMultiply(934, 314) == 293276)
+}
+
+object PeasantMultiplication extends App {
+
+  @tailrec
+  def peasantMultiply(x: Int, y: Int, sum: Int = 0): Int =
+    if x <= 0 then sum
+    else if x % 2 == 1 then peasantMultiply(x / 2, y + y, sum + y)
+    else peasantMultiply(x / 2, y + y, sum)
+
+  assert(peasantMultiply(8, 74) == 592)
+  assert(peasantMultiply(28, 14) == 392)
+  assert(peasantMultiply(934, 314) == 293276)
 }
