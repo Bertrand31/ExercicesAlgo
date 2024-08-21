@@ -9,7 +9,7 @@ object LovelyNumbers {
   private def walkThroughChars(chars: List[Char], soFar: Map[Char, Int] = Map()): Boolean =
     if (chars.isEmpty) true
     else {
-      val head +: tail = chars
+      val head :: tail = chars: @unchecked
       val newCount = soFar.getOrElse(head, 0) + 1
       if (newCount >= 3) false
       else walkThroughChars(tail, soFar + (head -> newCount))

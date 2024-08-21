@@ -6,7 +6,7 @@ import scala.collection.immutable.HashSet
 object SwapSum {
 
   def solution(arrayA: Array[Int], arrayB: Array[Int]): Boolean = {
-    val arrayBFootprint = HashSet(arrayB.toIndexedSeq:_*)
+    val arrayBFootprint = HashSet(arrayB.toIndexedSeq*)
     val halfDifference = Math.abs(arrayA.sum - arrayB.sum) / 2
     arrayA.exists(value =>
       arrayBFootprint.contains(halfDifference + value)

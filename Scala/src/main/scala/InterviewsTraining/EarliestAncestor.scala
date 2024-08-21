@@ -30,7 +30,7 @@ object EarliestAncestor {
   private def makeMap(pairs: List[(Int, Int)], soFar: Map[Int, Set[Int]] = Map()): Map[Int, Set[Int]] =
     if (pairs.isEmpty) soFar
     else {
-      val head +: tail = pairs
+      val head +: tail = pairs: @unchecked
       val (parent, child) = head
       val currentParents = soFar.getOrElse(child, Set())
       val newMap = soFar + (child -> (currentParents + parent))

@@ -15,7 +15,7 @@ import cats.implicits._
   */
 object AllSubsets {
 
-  private def subsetsNumber(arr: Iterable[_]): Int =
+  private def subsetsNumber(arr: Iterable[?]): Int =
     Math.pow(2, arr.size).toInt
 
   def get[A](arr: Array[A]): IndexedSeq[IndexedSeq[A]] =

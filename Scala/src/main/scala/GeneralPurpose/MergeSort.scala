@@ -11,8 +11,8 @@ object MergeSort {
     if (left.isEmpty) soFar ++ right
     else if (right.isEmpty) soFar ++ left
     else
-      val headLeft +: tailLeft = left
-      val headRight +: tailRight = right
+      val headLeft +: tailLeft = left: @unchecked
+      val headRight +: tailRight = right: @unchecked
       if (predicate(headLeft, headRight)) merge(predicate, tailLeft, right, soFar :+ headLeft)
       else merge(predicate, left, tailRight, soFar :+ headRight)
 

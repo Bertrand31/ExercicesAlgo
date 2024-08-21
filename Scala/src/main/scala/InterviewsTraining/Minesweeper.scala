@@ -59,7 +59,7 @@ object Minesweeper extends App {
 
   def markMines(board: Board): Board = {
     require(!board.isEmpty, "The board must be at least one row high")
-    val Array(head, tail@_*) = board.map(_.toList)
+    val Array(head, tail@_*) = board.map(_.toList): @unchecked
     require(head.length > 0, "The board must be at least one column wide")
     require(tail.forall(_.length === head.length), "All columns must have the same breadth")
     val isMineFn = memoizeUnary(isMine(board))

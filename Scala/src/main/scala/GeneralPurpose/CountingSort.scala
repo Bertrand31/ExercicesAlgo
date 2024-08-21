@@ -14,7 +14,7 @@ object CountingSort {
   private def recoverContinuousArray(arr: Seq[Int], min: Int, soFar: Seq[Int] = Seq(), index: Int = 0): Seq[Int] =
     if (arr.isEmpty) soFar
     else {
-      val head +: tail = arr
+      val head :: tail = arr: @unchecked
       val newContinuousArr =
         if (head == 0) soFar
         else soFar ++ Seq.fill(head)(index + min)
