@@ -24,7 +24,7 @@ object TowerOfHanoi extends App {
       pegs(to).prepend(disk)
       move(n - 1, pegs, tmp, to, from)
 
-  val disks = (1 to 15).map(Disk(_)).to(ArrayBuffer)
+  val disks = (1 to 5).map(Disk(_)).to(ArrayBuffer)
   val pegs = ArrayBuffer[ArrayBuffer[Disk]](disks, ArrayBuffer.empty, ArrayBuffer.empty)
   val result = move(disks.size, pegs, 0, 2, 1)
   assert(result(0).isEmpty)

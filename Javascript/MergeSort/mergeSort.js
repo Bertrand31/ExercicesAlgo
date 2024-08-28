@@ -1,4 +1,4 @@
-const { prepend, drop, head, lte, length, take } = require('ramda');
+const { prepend, drop, head, length, take } = require('ramda');
 
 const mergeSort = (comparisonPredicate, arr) => {
   if (length(arr) < 2) return arr;
