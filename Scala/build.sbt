@@ -1,4 +1,4 @@
-scalaVersion := "3.5.0"
+scalaVersion := "3.5.1"
 
 libraryDependencies ++= Seq(
   "org.typelevel" %% "cats-core" % "2.12.0",
