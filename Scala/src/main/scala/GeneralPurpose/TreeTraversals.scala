@@ -11,7 +11,29 @@ object TreeTraversals:
       case Node(left, right, value) => value #:: (dfs(left) ++ dfs(right))
       case Leaf(value) => LazyList(value)
 
+  def tailrecDfs(tree: Tree): LazyList[Int] =
+    @annotation.tailrec
+    def traverse(leftQ: Option[Tree], rightQ: Stack[Tree], soFar: LazyList[Int]): LazyList[Int] =
+      leftQ match
+        case Some(left) =>
+          left match
+            case Leaf(value) =>
+              traverse(None, rightQ, value #:: soFar)
+            case Node(left, right, value) => 
+              traverse(Some(left), rightQ.insert(right), value #:: soFar)
+        case None => 
+          rightQ.pop match
+            case None => soFar
+            case Some((right, rightTail)) =>
+              right match
+                case Leaf(value) =>
+                  traverse(None, rightTail, value #:: soFar)
+                case Node(left, right, value) => 
+                  traverse(Some(left), rightTail.insert(right), value #:: soFar)
+    traverse(Some(tree), Stack(), LazyList.empty) 
+
   def bfs(tree: Tree): LazyList[Int] =
+    @annotation.tailrec
     def traverse(queue: Queue[Tree], soFar: LazyList[Int]): LazyList[Int] =
       if queue.isEmpty then soFar
       else
@@ -44,5 +66,9 @@ object TreeTraversalsApp extends App:
   }
   {
     val res = TreeTraversals.dfs(sample)
+    println(res.toList)
+  }
+  {
+    val res = TreeTraversals.tailrecDfs(sample)
     println(res.toList)
   }
