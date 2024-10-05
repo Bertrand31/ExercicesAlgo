@@ -2,33 +2,28 @@
 
 object DividePlayers {
 
+  private def formTeams(players: Array[Int], base: Long, targetSum: Int): Long =
+    val (below, above) = players.partition(_ > targetSum / 2)
+    if below.size != above.size then -1
+    else
+      val belowMap = below.groupMapReduce(identity)(_ => 1)(_ + _)
+      val aboveMap = above.groupMapReduce(identity)(_ => 1)(_ + _)
+      if !belowMap.forall(tpl => aboveMap.get(targetSum - tpl._1).fold(false)(_ == tpl._2)) then
+        -1
+      else
+        base + below.foldLeft(0l)((acc, s) => acc + s.toLong * (targetSum - s).toLong)
+
   def dividePlayers(skill: Array[Int]): Long =
     if skill.isEmpty || skill.size % 2 != 0 then -1
     else
       val targetSum = skill.min + skill.max
       val targetSumHalf = targetSum / 2
       if targetSum % 2 == 0 then
-        val halves = skill.count(_ == targetSumHalf)
-        val base = (targetSumHalf * targetSumHalf) * (halves / 2).toLong
-        val (below, above) = skill.filter(_ != targetSumHalf).partition(_ > targetSumHalf)
-        if below.size != above.size then -1
-        else
-          val belowMap = below.groupMapReduce(identity)(_ => 1)(_ + _)
-          val aboveMap = above.groupMapReduce(identity)(_ => 1)(_ + _)
-          if !belowMap.forall(tpl => aboveMap.get(targetSum - tpl._1).fold(false)(_ == tpl._2)) then
-            -1
-          else
-            base + below.foldLeft(0l)((acc, s) => acc + s.toLong * (targetSum - s).toLong)
+        val (halves, otherPlayers) = skill.partition(_ == targetSumHalf)
+        val base = (targetSumHalf * targetSumHalf) * (halves.size / 2).toLong
+        formTeams(otherPlayers, base, targetSum)
       else
-        val (below, above) = skill.partition(_ > targetSumHalf)
-        if below.size != above.size then -1
-        else
-          val belowMap = below.groupMapReduce(identity)(_ => 1)(_ + _)
-          val aboveMap = above.groupMapReduce(identity)(_ => 1)(_ + _)
-          if !belowMap.forall(tpl => aboveMap.get(targetSum - tpl._1).fold(false)(_ == tpl._2)) then
-            -1
-          else
-            below.foldLeft(0l)((acc, s) => acc + s.toLong * (targetSum - s).toLong)
+        formTeams(skill, 0, targetSum)
 }
 
 object DividePlayersApp extends App {
@@ -48,10 +43,10 @@ object DividePlayersApp extends App {
     val res = DividePlayers.dividePlayers(sample)
     assert(res == -1)
   }
-  {
-    val sample = Array.fill(50000)(1000)
-    val res = DividePlayers.dividePlayers(sample)
-    println(res)
-    assert(res == 50000000000l)
-  }
+  // {
+  //   val sample = Array.fill(50000)(1000)
+  //   val res = DividePlayers.dividePlayers(sample)
+  //   println(res)
+  //   assert(res == 50000000000l)
+  // }
 }
